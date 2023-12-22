@@ -5,6 +5,8 @@
 This repository compiles the sample code and supplementary information for the book "Introduction to Vision Transformer".
 For the sample code related to "Chapter 3: Exploring Vision Transformer through Experiments and Visualization", please download it from the [support page](https://gihyo.jp/book/2022/978-4-297-13058-9/support).
 
+<img src="misc/book-cover.jpeg" width="200">
+
 ## License
 
 The sample code is released under the MIT License.
