@@ -1,63 +1,62 @@
 # -*- coding: utf-8 -*-
 
 # ----------------------------
-# 必要なライブラリをインポート
+# Import necessary libraries
 # ----------------------------
 import torch
 import torch.nn as nn
 
 
 # ----------------------------
-# 2-1 準備
+# 2-1 Preparation
 # ----------------------------
-print("=======2-1 準備=======")
+print("=======2-1 Preparation=======")
 
 class SimpleMlp(nn.Module):
     def __init__(self, vec_length:int=16, hidden_unit_1:int=8, hidden_unit_2:int=2): 
         """
-        引数:
-            vec_length: 入力ベクトルの長さ 
-            hidden_unit_1: 1つ目の線形層のニューロン数 
-            hidden_unit_2: 2つ目の線形層のニューロン数
+        Arguments:
+            vec_length: Length of the input vector
+            hidden_unit_1: Number of neurons in the first linear layer
+            hidden_unit_2: Number of neurons in the second linear layer
         """
-        # 継承しているnn.Moduleの__init__()メソッドの呼び出し 
+        # Call to the __init__() method of the inherited nn.Module
         super(SimpleMlp, self).__init__()
-        # 1つ目の線形層
+        # First linear layer
         self.layer1 = nn.Linear(vec_length, hidden_unit_1)
-        # 活性化関数のReLU
+        # ReLU activation function
         self.relu = nn.ReLU()
-        # 2つ目の線形層
+        # Second linear layer
         self.layer2 = nn.Linear(hidden_unit_1, hidden_unit_2)
 
-
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """順伝搬は、線形層→ReLU→線形層の順番 
-        引数:
-            x: 入力。(B, D_in)
-                B: バッチサイズ、 D_in: ベクトルの長さ
-        返り値:
-            out: 出力。(B, D_out)
-                B: バッチサイズ、 D_out: ベクトルの長さ 
+        """Forward propagation follows the sequence: linear layer → ReLU → linear layer
+        Arguments:
+            x: Input. Shape: (B, D_in)
+                B: Batch size, D_in: Length of the vector
+        Returns:
+            out: Output. Shape: (B, D_out)
+                B: Batch size, D_out: Length of the vector
         """
-        # 1つ目の線形層
+        # First linear layer
         out = self.layer1(x)
         # ReLU
         out = self.relu(out)
-        # 2つ目の線形層
+        # Second linear layer
         out = self.layer2(out) 
         return out
 
-vec_length = 16 # 入力ベクトルの長さ 
-hidden_unit_1 = 8 # 1つ目の線形層のニューロン数 
-hidden_unit_2 = 2 # 2つ目の線形層のニューロン数
+vec_length = 16  # Length of the input vector
+hidden_unit_1 = 8  # Number of neurons in the first linear layer
+hidden_unit_2 = 2  # Number of neurons in the second linear layer
 
-batch_size = 4 # バッチサイズ。入力ベクトルの数 
+batch_size = 4  # Batch size. Number of input vectors
 
-# 入力ベクトル。xの形状: (4, 16)
+# Input vector. Shape of x: (4, 16)
 x = torch.randn(batch_size, vec_length)
-# MLPを定義
+# Define the MLP
 net = SimpleMlp(vec_length, hidden_unit_1, hidden_unit_2) 
-# MLPで順伝搬
+# Forward propagation in the MLP
 out = net(x)
-# MLPの出力outの形状が(4, 2)であることを確認 
+# Check that the shape of the MLP output out is (4, 2)
 print(out.shape)
